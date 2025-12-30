@@ -20,7 +20,7 @@ const Profile = ({ onLogout }) => {
         <p className='profile-email'>{userEmail}</p>
 
         <div className='profile-actions'>
-          <a className='profile-action' href='/orders'>Edit Profile</a>
+          <button className='profile-action' onClick={() => navigate('/profile/edit')}>Edit Profile</button>
           <a className='profile-action' href='/help-support'>Help & Support</a>
           <button className='logout-button' onClick={handleLogout}>Log out</button>
         </div>

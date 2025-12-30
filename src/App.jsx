@@ -30,6 +30,7 @@ import Content from './admin/pages/Content/Content'
 import Reports from './admin/pages/Reports/Reports'
 import Settings from './admin/pages/Settings/Settings'
 import Profile from './pages/Profile/Profile'
+import EditProfile from './pages/Profile/EditProfile'
 import AdminProfile from './admin/pages/Profile/Profile'
 
 const App = () => {
@@ -59,6 +60,7 @@ const App = () => {
           <Route path='/cart' element={<Cart />} />
           <Route path='/order' element={<PlaceOrder />} />
           <Route path='/profile' element={<Profile onLogout={() => setIsUserLoggedIn(false)} />} />
+          <Route path='/profile/edit' element={<EditProfile />} />
           <Route path='/about' element={<About />} />
           <Route path='/privacy-policy' element={<PrivacyPolicy />} />
           <Route path='/help-support' element={<HelpSupport />} />

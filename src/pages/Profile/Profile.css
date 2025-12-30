@@ -42,14 +42,24 @@
   padding: 10px 14px;
   border: 1px solid #dcdcdc;
   border-radius: 8px;
-  color: #333;
+  color: #dbdbdb;
   text-decoration: none;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.profile-action:hover{
+  background: #f46558;
+  color: #ffffff;
 }
 
 .logout-button{
-  background: transparent;
+  background:  #89de5e;
   font-size: 16px;
-  color: rgb(241, 20, 20);
+  color:rgb(0, 0, 0);
   border: 2px solid rgba(56, 133, 221, 0.766);
   padding: 10px 30px;
   border-radius: 50px;
@@ -58,7 +68,8 @@
 }
 
 .logout-button:hover{
-  background-color: #f7e4e0;
+  background: yellow;
+  color: rgb(0, 0, 0);
 }
 
 

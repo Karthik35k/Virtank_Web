@@ -12,16 +12,17 @@ const Delivery = () => {
     orderId: 'ORD-784213',
     eta: '28-35 min',
     stages: [
-      { key: 'placed', label: 'Order Placed', time: '12:15 PM', done: true },
-      { key: 'preparing', label: 'Preparing', time: '12:22 PM', done: true },
-      { key: 'picked', label: 'Picked Up', time: '12:40 PM', done: true },
-      { key: 'enroute', label: 'On the Way', time: '—', done: orderIdToStatus['#784213'] === 'on_the_way' || orderIdToStatus['#784213'] === 'delivered' },
-      { key: 'delivered', label: 'Delivered', time: '—', done: orderIdToStatus['#784213'] === 'delivered' }
+      { key: 'placed', label: 'Order Placed', time: '12:15 PM', done: true, icon: '✓' },
+      { key: 'preparing', label: 'Preparing', time: '12:22 PM', done: true, icon: '✓' },
+      { key: 'picked', label: 'Picked Up', time: '12:40 PM', done: true, icon: '✓' },
+      { key: 'enroute', label: 'On the Way', time: '—', done: orderIdToStatus['#784213'] === 'on_the_way' || orderIdToStatus['#784213'] === 'delivered', icon: '🚚' },
+      { key: 'delivered', label: 'Delivered', time: '—', done: orderIdToStatus['#784213'] === 'delivered', icon: '✓' }
     ],
     rider: {
       name: 'Rahul Kumar',
-      phone: '+91 80963 20856',
-      vehicle: 'AP 07 CD 1234'
+      phone: '+91 91827 18386',
+      vehicle: 'AP 07 CD 1234',
+      avatar: '👤'
     },
     restaurant: {
       name: 'Mirchi Restaurant',
@@ -31,91 +32,163 @@ const Delivery = () => {
       name: '22B-14/A',
       address: 'Lakshmipuram, Guntur'
     }
-  }), []);
+  }), [orderIdToStatus]);
 
   const totalStages = tracking.stages.length;
   const completedStages = tracking.stages.filter(s => s.done).length;
   const progressPercent = Math.round((completedStages / totalStages) * 100);
+  const currentStage = tracking.stages.find(s => !s.done) || tracking.stages[tracking.stages.length - 1];
 
   return (
     <div className='delivery-page'>
       <div className='delivery-container'>
         <div className='delivery-header'>
-          <h1>Delivery Tracking</h1>
-          <p>
-            Order <strong>{tracking.orderId}</strong> • ETA: <strong>{tracking.eta}</strong>
+          <div className='header-icon'>📦</div>
+          <h1>Track Your Order</h1>
+          <div className='order-info'>
+            <span className='order-id'>Order {tracking.orderId}</span>
+            <span className='eta-badge'>
+              <span className='eta-icon'>⏱</span>
+              ETA: {tracking.eta}
+            </span>
             <span className={`status-pill ${status}`}>
               {getReadableStatus(status)}
             </span>
-          </p>
-          <div className='progress-bar' aria-label='delivery progress'>
-            <div className='progress-fill' style={{ width: `${progressPercent}%` }} />
           </div>
-          <div className='progress-meta'>
-            <span>{completedStages} of {totalStages} steps</span>
-            <span>{progressPercent}%</span>
+          <div className='progress-section'>
+            <div className='progress-bar' aria-label='delivery progress'>
+              <div className='progress-fill' style={{ width: `${progressPercent}%` }}>
+                <div className='progress-glow' />
+              </div>
+            </div>
+            <div className='progress-meta'>
+              <span className='progress-text'>
+                <strong>{completedStages}</strong> of <strong>{totalStages}</strong> steps completed
+              </span>
+              <span className='progress-percent'>{progressPercent}%</span>
+            </div>
+            {currentStage && !currentStage.done && (
+              <div className='current-status'>
+                <span className='pulse-dot' /> Currently: {currentStage.label}
+              </div>
+            )}
           </div>
         </div>
 
         <div className='delivery-grid'>
-          <div className='tracking-card'>
-            <h2>Live Status</h2>
-            <ol className='tracking-steps'>
-              {tracking.stages.map(stage => (
-                <li key={stage.key} className={`step ${stage.done ? 'done' : ''}`}>
-                  <div className='step-marker' />
-                  <div className='step-content'>
-                    <div className='step-title'>{stage.label}</div>
-                    <div className='step-time'>{stage.time}</div>
+          <div className='tracking-card card-elevated'>
+            <div className='card-header'>
+              <h2>
+                <span className='card-icon'>📍</span>
+                Live Status
+              </h2>
+            </div>
+            <div className='tracking-timeline'>
+              {tracking.stages.map((stage, index) => (
+                <div key={stage.key} className={`timeline-item ${stage.done ? 'completed' : ''} ${index === completedStages - 1 ? 'active' : ''}`}>
+                  <div className='timeline-marker'>
+                    <div className='marker-inner'>
+                      {stage.done ? <span className='check-icon'>✓</span> : <span className='stage-icon'>{stage.icon}</span>}
+                    </div>
+                    {index < tracking.stages.length - 1 && <div className='timeline-line' />}
                   </div>
-                </li>
+                  <div className='timeline-content'>
+                    <div className='timeline-title'>{stage.label}</div>
+                    <div className='timeline-time'>{stage.time}</div>
+                  </div>
+                </div>
               ))}
-            </ol>
+            </div>
           </div>
 
-          <div className='info-card'>
-            <h2>Delivery Partner</h2>
-            <div className='info-row'>
-              <span>Name</span>
-              <strong>{tracking.rider.name}</strong>
+          <div className='info-card card-elevated'>
+            <div className='card-header'>
+              <h2>
+                <span className='card-icon'>🚴</span>
+                Delivery Partner
+              </h2>
             </div>
-            <div className='info-row'>
-              <span>Phone</span>
-              <a className='link' href={`tel:${tracking.rider.phone.replace(/[^0-9+]/g, '')}`}>{tracking.rider.phone}</a>
+            <div className='rider-profile'>
+              <div className='rider-avatar'>{tracking.rider.avatar}</div>
+              <div className='rider-info'>
+                <div className='rider-name'>{tracking.rider.name}</div>
+                <div className='rider-vehicle'>{tracking.rider.vehicle}</div>
+              </div>
             </div>
-            <div className='info-row'>
-              <span>Vehicle</span>
-              <strong>{tracking.rider.vehicle}</strong>
+            <div className='info-details'>
+              <div className='info-item'>
+                <span className='info-label'>📞 Phone</span>
+                <a className='info-value link' href={`tel:${tracking.rider.phone.replace(/[^0-9+]/g, '')}`}>
+                  {tracking.rider.phone}
+                </a>
+              </div>
+              <div className='info-item'>
+                <span className='info-label'>🏍️ Vehicle</span>
+                <span className='info-value'>{tracking.rider.vehicle}</span>
+              </div>
             </div>
             <div className='actions'>
-              <a className='btn primary' href={`tel:${tracking.rider.phone.replace(/[^0-9+]/g, '')}`}>Call Rider</a>
-              <button className='btn share' onClick={() => navigator?.share ? navigator.share({ title: 'Track my order', text: `Order ${tracking.orderId}`, url: window.location.href }) : window.alert('Share this page link to track the order.')}>Share</button>
-              <button className='btn ghost' onClick={() => navigate('/help-support')}>Help</button>
+              <a className='btn btn-primary' href={`tel:${tracking.rider.phone.replace(/[^0-9+]/g, '')}`}>
+                <span className='btn-icon'>📞</span>
+                Call Rider
+              </a>
+              <button 
+                className='btn btn-secondary' 
+                onClick={() => navigator?.share ? navigator.share({ title: 'Track my order', text: `Order ${tracking.orderId}`, url: window.location.href }) : window.alert('Share this page link to track the order.')}
+              >
+                <span className='btn-icon'>🔗</span>
+                Share
+              </button>
+              <button className='btn btn-ghost' onClick={() => navigate('/help-support')}>
+                <span className='btn-icon'>❓</span>
+                Help
+              </button>
             </div>
           </div>
 
-          <div className='info-card'>
-            <h2>Route</h2>
-            <div className='route-box'>
-              <div className='route-point'>
-                <div className='dot origin' />
-                <div>
-                  <div className='point-title'>{tracking.restaurant.name}</div>
-                  <div className='point-sub'>{tracking.restaurant.address}</div>
+          <div className='info-card card-elevated route-card'>
+            <div className='card-header'>
+              <h2>
+                <span className='card-icon'>🗺️</span>
+                Delivery Route
+              </h2>
+            </div>
+            <div className='route-container'>
+              <div className='route-point origin-point'>
+                <div className='route-marker origin-marker'>
+                  <div className='marker-pulse' />
+                </div>
+                <div className='route-info'>
+                  <div className='route-label'>From</div>
+                  <div className='route-name'>{tracking.restaurant.name}</div>
+                  <div className='route-address'>{tracking.restaurant.address}</div>
                 </div>
               </div>
-              <div className='route-line' />
-              <div className='route-point'>
-                <div className='dot destination' />
-                <div>
-                  <div className='point-title'>{tracking.destination.name}</div>
-                  <div className='point-sub'>{tracking.destination.address}</div>
+              <div className='route-connector'>
+                <div className='connector-line' />
+                <div className='connector-icon'>→</div>
+              </div>
+              <div className='route-point destination-point'>
+                <div className='route-marker destination-marker'>
+                  <div className='marker-pulse' />
+                </div>
+                <div className='route-info'>
+                  <div className='route-label'>To</div>
+                  <div className='route-name'>{tracking.destination.name}</div>
+                  <div className='route-address'>{tracking.destination.address}</div>
                 </div>
               </div>
             </div>
-            <div className='map-placeholder' role='img' aria-label='map placeholder'>
-              <a href="https://www.google.com/maps?q=Lakshmipuram,+Guntur,+Andhra+Pradesh+522007" target="_blank" rel="noopener noreferrer">Track Delivery boy</a>
-            </div>
+            <a 
+              className='map-button' 
+              href="https://www.google.com/maps?q=Lakshmipuram,+Guntur,+Andhra+Pradesh+522007" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              <span className='map-icon'>🗺️</span>
+              <span>View on Google Maps</span>
+              <span className='map-arrow'>→</span>
+            </a>
           </div>
         </div>
       </div>
