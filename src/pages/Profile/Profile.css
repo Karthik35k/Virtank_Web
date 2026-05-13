@@ -8,9 +8,10 @@
 .profile-card{
   width: 100%;
   max-width: 520px;
-  border: 1px solid #e6e6e6;
+  border: 3px solid #000000;
   border-radius: 16px;
   padding: 24px;
+  background-color: rgb(212, 212, 212);
   box-shadow: 0 6px 24px rgba(0,0,0,0.06);
   text-align: center;
 }
@@ -57,9 +58,9 @@
 }
 
 .logout-button{
-  background:  #89de5e;
+  background:  #ffffff;
   font-size: 16px;
-  color:rgb(0, 0, 0);
+  color:rgb(2, 2, 2);
   border: 2px solid rgba(56, 133, 221, 0.766);
   padding: 10px 30px;
   border-radius: 50px;
@@ -68,8 +69,8 @@
 }
 
 .logout-button:hover{
-  background: yellow;
-  color: rgb(0, 0, 0);
+  background: rgb(0, 0, 0);
+  color: rgb(255, 255, 255);
 }
 
 

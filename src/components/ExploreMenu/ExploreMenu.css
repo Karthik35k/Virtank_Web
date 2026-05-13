@@ -34,14 +34,14 @@
 }
 .explore-menu-list-item p{
     margin-top: 10px;
-    color: #747474;
+    color: #2f2f2f;
     font-size: max(1.4vw, 16px);
     cursor: pointer;
 }
 .explore-menu hr{
     margin: 10px 0px;
-    height: 2px;
-    background-color: #e2e2e2;
+    height: 3px;
+    background-color: #000000;
     border: none;
 }
 .explore-menu-list-item .active{

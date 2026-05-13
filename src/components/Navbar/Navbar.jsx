@@ -5,7 +5,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { StoreContext } from '../../context/StoreContext';
 import { useAdminAuth } from '../../admin/auth/AdminAuthContext';
 
-const Navbar = ({setShowLogin, openRoleSelect, isUserLoggedIn, onUserLogout}) => {
+const Navbar = ({setShowLogin, openRoleSelect, isUserLoggedIn}) => {
 
     const [menu,setMenu]= useState("home");
     const [scrollToFooter, setScrollToFooter] = useState(false);
@@ -66,6 +66,7 @@ const Navbar = ({setShowLogin, openRoleSelect, isUserLoggedIn, onUserLogout}) =>
             </div>
             {(() => {
                 try {
+                    // eslint-disable-next-line react-hooks/rules-of-hooks
                     const { isAuthenticated } = useAdminAuth();
                     if (isAuthenticated) {
                         return (
@@ -74,7 +75,7 @@ const Navbar = ({setShowLogin, openRoleSelect, isUserLoggedIn, onUserLogout}) =>
                             </Link>
                         )
                     }
-                } catch {}
+                } catch { /* empty */ }
                 return isUserLoggedIn ? (
                     <img src={assets.profile_icon} alt="User Profile" className="profile-icon" onClick={()=>navigate('/profile')} />
                 ) : (
