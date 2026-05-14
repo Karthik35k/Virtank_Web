@@ -1,0 +1,16 @@
+.menu-page {
+  padding: 20px 2%;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+.menu-page-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+@media (max-width: 768px) {
+  .menu-page {
+    padding: 20px 4%;
+  }
+}

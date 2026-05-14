@@ -1,0 +1,99 @@
+.footer {
+    color: white;
+    background-color: #232222;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 8vw;
+    padding-top: 50px;
+    margin-top: 80px;
+}
+.footer-content {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 80px;
+}
+.footer-content-left, .footer-content-right, .footer-content-center {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 20px;
+}
+.footer-content-left li, .footer-content-right li, .footer-content-center li {
+   list-style: none;
+   margin-bottom: 10px;
+   cursor: pointer;
+}
+.footer-content-left .footer-logo {
+    width: 200px;
+    height: 75px;
+    cursor: pointer;
+}
+.footer-content-left h2, .footer-content-right h2, .footer-content-center h2 {
+   color: white;
+}
+.footer-social-icons img {
+    width: 40px;
+    margin-right: 15px;
+    cursor: pointer;
+}
+.footer hr {
+    width: 100%;
+    height: 2px;
+    margin: 20px 0;
+    background-color: white;
+    border: none;
+}
+@media (max-width: 750px) {
+    .footer-content {
+        display: flex;
+        flex-direction: column;
+        gap: 35px;
+    }
+    .footer-copyright {
+        text-align: center;
+    }
+}
+.footer-logo {
+    width: 150px;       /* adjust the width as needed */
+    height: 70px;       /* maintain aspect ratio */
+    margin-bottom: 20px; /* spacing below the logo */
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth hover effect */
+}
+
+.footer-logo:hover {
+    transform: scale(1.1); /* Slightly enlarge the logo on hover */
+    opacity: 0.8;         /* Reduce opacity for a subtle effect */
+    cursor: pointer;      /* Ensure the pointer cursor appears */
+}
+
+@media (max-width: 750px) {
+    .footer-logo {
+        width: 120px;  /* smaller width on mobile */
+        margin-bottom: 15px;
+    }
+}
+
+/* Hover effect for all menu items */
+.footer-content-center li a:hover {
+    color: #f39c12;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Hover effect for all menu items */
+.footer-content-center li a:hover,
+.footer-content-right ul a:hover {
+    color: #f39c12;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+.footer-social-icons img:hover {
+    transform: scale(1.1); /* Slightly enlarge the logo on hover */
+    opacity: 0.8;         /* Reduce opacity for a subtle effect */
+    cursor: pointer;      /* Ensure the pointer cursor appears */
+}

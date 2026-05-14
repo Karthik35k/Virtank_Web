@@ -1,0 +1,19 @@
+.admin-profile {
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.admin-profile .profile-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-top: 1px dashed #e9ecef;
+}
+
+.admin-profile .profile-row:first-of-type {
+  border-top: 0;
+}
+
+

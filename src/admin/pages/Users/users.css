@@ -1,0 +1,27 @@
+.admin-section { display: grid; gap: 16px; }
+.section-header { display:flex; justify-content:space-between; align-items:center; }
+.section-title { margin:0; }
+.section-actions { display:flex; gap:8px; }
+.btn { background:#df1515; color:#fff; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; }
+.btn.secondary { background:#263238; }
+.btn.ghost { background:transparent; color:#263238; border:2px solid #e9ecef; }
+
+.cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:12px; }
+.card { background:#fff; border:2px solid #e9ecef; border-radius:12px; padding:14px; }
+.metric { font-size:1.6rem; font-weight:700; color:#2c3e50; }
+.muted { color:#6c757d; }
+
+.table-wrap { background:#fff; border:2px solid #e9ecef; border-radius:12px; overflow:auto; }
+table.data { width:100%; border-collapse:collapse; font-size:0.95rem; }
+table.data thead th { text-align:left; background:#f8f9fa; color:#2c3e50; padding:10px; border-bottom:2px solid #e9ecef; position:sticky; top:0; }
+table.data tbody td { padding:10px; border-top:1px dashed #edf0f3; color:#2c3e50; }
+table.data tbody tr:hover { background:#fafbfc; }
+.status { padding:4px 8px; border-radius:999px; font-size:0.8rem; }
+.status.success { background:#eafaf1; color:#155724; }
+.status.warn { background:#fff4e5; color:#8a6d3b; }
+.status.info { background:#e8f4ff; color:#0b6ab8; }
+
+.users-table { border-left:6px solid #7952b3; }
+.users-table .status.warn { background:#fff4e5; color:#8a6d3b; }
+
+
