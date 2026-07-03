@@ -5,10 +5,10 @@
       "framework": "vite"
     },
     "backend": {
-  "root": "backend",
-  "runtime": "node",
-  "entrypoint": "src/server.js"
-}
+      "root": "backend",
+      "runtime": "node",
+      "entrypoint": "src/server.js"
+    }
   },
   "rewrites": [
     {
