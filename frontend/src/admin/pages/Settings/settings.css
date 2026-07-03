@@ -1,0 +1,21 @@
+.admin-section { display: grid; gap: 16px; }
+.section-header { display:flex; justify-content:space-between; align-items:center; }
+.section-title { margin:0; }
+.section-actions { display:flex; gap:8px; }
+.btn { background:#df1515; color:#fff; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; }
+.btn.secondary { background:#263238; }
+.btn.ghost { background:transparent; color:#263238; border:2px solid #e9ecef; }
+
+.cards { display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:12px; }
+.card { background:#fff; border:2px solid #e9ecef; border-radius:12px; padding:14px; }
+.metric { font-size:1.6rem; font-weight:700; color:#2c3e50; }
+.muted { color:#6c757d; }
+
+.grid { display:grid; gap:12px; }
+.grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 900px) { .grid.cols-2, .grid.cols-3 { grid-template-columns: 1fr; } }
+
+.settings-grid .card { border-left:6px solid #263238; }
+
+
