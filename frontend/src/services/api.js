@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://virtank-web.vercel.app/api",
+  baseURL: "https://virtank-backend.onrender.com",
 });
 
 export default API;
