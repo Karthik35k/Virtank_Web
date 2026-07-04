@@ -1,23 +1,26 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { assets } from '../../assets/assets';
+import { useAuth } from '../../context/AuthContext';
+import API from '../../services/api';
 import './EditProfile.css';
 
 const EditProfile = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
+  const { user, updateUser } = useAuth();
 
   // User data state
   const [userData, setUserData] = useState({
-    username: 'John Doe',
-    email: 'user@virtank.com',
+    username: user?.username || '',
+    email: user?.email || '',
     profilePicture: null,
     profilePictureUrl: assets.profile_icon
   });
 
   // Form states
-  const [username, setUsername] = useState(userData.username);
-  const [email, setEmail] = useState(userData.email);
+  const [username, setUsername] = useState(user?.username || '');
+  const [email, setEmail] = useState(user?.email || '');
   const [newEmail, setNewEmail] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -156,9 +159,9 @@ const EditProfile = () => {
     }
 
     try {
-      // Simulate API call
-      // await fetch('/api/user/update-username', { method: 'PUT', body: JSON.stringify({ username }) })
-      setUserData({ ...userData, username });
+      const res = await API.put('/auth/profile', { username: username.trim() });
+      setUserData({ ...userData, username: res.data.username });
+      updateUser(res.data);
       setErrors({ ...errors, username: '' });
       setUsernameSuccess('Username updated successfully!');
       
@@ -168,7 +171,10 @@ const EditProfile = () => {
         usernameSuccessTimeoutRef.current = null;
       }, 4000);
     } catch (error) {
-      setErrors({ ...errors, username: 'Failed to update username. Please try again.' });
+      setErrors({
+        ...errors,
+        username: error.response?.data?.message || 'Failed to update username. Please try again.',
+      });
     }
   };
 
@@ -194,8 +200,7 @@ const EditProfile = () => {
     }
 
     try {
-      // Simulate API call
-      // await fetch('/api/user/change-password', { method: 'PUT', body: JSON.stringify({ currentPassword, newPassword }) })
+      await API.put('/auth/password', { currentPassword, newPassword });
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
@@ -211,7 +216,10 @@ const EditProfile = () => {
         successTimeoutRef.current = null;
       }, 4000);
     } catch (error) {
-      setErrors({ ...errors, currentPassword: 'Current password is incorrect' });
+      setErrors({
+        ...errors,
+        currentPassword: error.response?.data?.message || 'Current password is incorrect',
+      });
     }
   };
 

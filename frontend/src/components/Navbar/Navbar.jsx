@@ -3,14 +3,15 @@ import './Navbar.css'
 import { assets } from '../../assets/assets'
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { StoreContext } from '../../context/StoreContext';
-import { useAdminAuth } from '../../admin/auth/AdminAuthContext';
+import { useAuth } from '../../context/AuthContext';
 
-const Navbar = ({setShowLogin, openRoleSelect, isUserLoggedIn}) => {
+const Navbar = ({setShowLogin, openRoleSelect}) => {
 
     const [menu,setMenu]= useState("home");
     const [scrollToFooter, setScrollToFooter] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
+    const { isAuthenticated, isAdmin } = useAuth();
 
     const {getTotalCartAmount} = useContext(StoreContext);
 
@@ -64,31 +65,21 @@ const Navbar = ({setShowLogin, openRoleSelect, isUserLoggedIn}) => {
                <Link to='/cart'> <img src={assets.basket_icon} alt="" /></Link>
                 <div className={getTotalCartAmount()===0?"":"dot"}></div>
             </div>
-            {(() => {
-                try {
-                    // eslint-disable-next-line react-hooks/rules-of-hooks
-                    const { isAuthenticated } = useAdminAuth();
-                    if (isAuthenticated) {
-                        return (
-                            <Link to='/admin'>
-                              <img src={assets.profile_icon} alt="Admin Profile" className="profile-icon" />
-                            </Link>
-                        )
+            {isAdmin ? (
+                <Link to='/admin'>
+                  <img src={assets.profile_icon} alt="Admin Profile" className="profile-icon" />
+                </Link>
+            ) : isAuthenticated ? (
+                <img src={assets.profile_icon} alt="User Profile" className="profile-icon" onClick={()=>navigate('/profile')} />
+            ) : (
+                <button onClick={()=> {
+                    if (location.pathname === '/delivery' || location.pathname === '/order' || location.pathname === '/cart') {
+                        setShowLogin(true);
+                    } else {
+                        openRoleSelect ? openRoleSelect() : setShowLogin(true);
                     }
-                } catch { /* empty */ }
-                return isUserLoggedIn ? (
-                    <img src={assets.profile_icon} alt="User Profile" className="profile-icon" onClick={()=>navigate('/profile')} />
-                ) : (
-                    <button onClick={()=> {
-                        // On delivery/order pages, directly show login for users
-                        if (location.pathname === '/delivery' || location.pathname === '/order' || location.pathname === '/cart') {
-                            setShowLogin(true);
-                        } else {
-                            openRoleSelect ? openRoleSelect() : setShowLogin(true);
-                        }
-                    }}>sign in</button>
-                )
-            })()}
+                }}>sign in</button>
+            )}
         </div>
     </div>
   )

@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { assets } from '../../assets/assets'
 import API from '../../services/api'
+import { useAuth } from '../../context/AuthContext'
 import './LoginPopup.css'
 
-const LoginPopup = ({ setShowLogin, onLoginSuccess }) => {
+const LoginPopup = ({ setShowLogin }) => {
+  const { login } = useAuth()
   const [currentState, setCurrentState] = useState('Login')
   const [formData, setFormData] = useState({
     username: '',
@@ -42,9 +44,14 @@ const LoginPopup = ({ setShowLogin, onLoginSuccess }) => {
 
       const res = await API.post(endpoint, payload)
 
-      localStorage.setItem('token', res.data.token)
+      if (res.data.role === 'admin') {
+        setError('Please use the admin login page for admin accounts.')
+        localStorage.removeItem('token')
+        return
+      }
+
+      login(res.data)
       setShowLogin(false)
-      onLoginSuccess?.()
     } catch (err) {
       setError(
         err.response?.data?.message ||

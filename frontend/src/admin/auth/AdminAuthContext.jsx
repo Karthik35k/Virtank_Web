@@ -1,46 +1,40 @@
-import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useMemo } from 'react';
+import API from '../../services/api';
+import { useAuth } from '../../context/AuthContext';
 
 const AdminAuthContext = createContext(null);
 
 export const AdminAuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [adminUser, setAdminUser] = useState(null);
+  const { user, isAdmin, login, logout } = useAuth();
 
-  const login = useCallback(async (email, password) => {
+  const adminLogin = useCallback(async (email, password) => {
     try {
-      // Allow demo admin credentials to log in without backend
-      if (email === 'admin@virtank.com' && password === 'admin123') {
-        setIsAuthenticated(true);
-        setAdminUser({ email: 'admin@virtank.com', id: 'demo-admin' });
-        return { ok: true };
-      }
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-      if (!res.ok) {
-        const data = await res.json().catch(()=>({}));
-        return { ok: false, error: data?.error || 'Login failed' };
-      }
-      const data = await res.json();
-      if (data?.user?.role !== 'admin') {
+      const res = await API.post('/auth/login', { email, password });
+
+      if (res.data.role !== 'admin') {
         return { ok: false, error: 'Not an admin account' };
       }
-      setIsAuthenticated(true);
-      setAdminUser({ email: data.user.email, id: data.user.id });
+
+      login(res.data);
       return { ok: true };
-    } catch (e) {
-      return { ok: false, error: 'Network error' };
+    } catch (err) {
+      return {
+        ok: false,
+        error: err.response?.data?.message || 'Login failed',
+      };
     }
-  }, []);
+  }, [login]);
 
-  const logout = useCallback(() => {
-    setIsAuthenticated(false);
-    setAdminUser(null);
-  }, []);
+  const value = useMemo(
+    () => ({
+      isAuthenticated: isAdmin,
+      adminUser: isAdmin ? user : null,
+      login: adminLogin,
+      logout,
+    }),
+    [isAdmin, user, adminLogin, logout]
+  );
 
-  const value = useMemo(() => ({ isAuthenticated, adminUser, login, logout }), [isAuthenticated, adminUser, login, logout]);
   return <AdminAuthContext.Provider value={value}>{children}</AdminAuthContext.Provider>;
 };
 
@@ -49,5 +43,3 @@ export const useAdminAuth = () => {
   if (!ctx) throw new Error('useAdminAuth must be used within AdminAuthProvider');
   return ctx;
 };
-
-

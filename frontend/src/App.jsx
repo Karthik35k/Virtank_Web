@@ -15,6 +15,7 @@ import { OrderStatusProvider } from './context/OrderStatusContext'
 import LoginPopup from './components/LoginPopup/LoginPopup'
 import RoleSelect from './components/LoginPopup/RoleSelect'
 import ScrollToTop from './components/ScrollToTop'
+import UserGuard from './components/UserGuard/UserGuard'
 import { AdminAuthProvider } from './admin/auth/AdminAuthContext'
 import AdminGuard from './admin/AdminGuard'
 import AdminLayout from './admin/AdminLayout'
@@ -34,54 +35,55 @@ import EditProfile from './pages/Profile/EditProfile'
 import AdminProfile from './admin/pages/Profile/Profile'
 
 const App = () => {
-
   const [showLogin, setShowLogin] = useState(false)
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false)
   const [showRoleSelect, setShowRoleSelect] = useState(false)
 
   return (
     <>
-    {showRoleSelect && (
-      <RoleSelect
-        onClose={() => setShowRoleSelect(false)}
-        onSelectUser={() => { setShowRoleSelect(false); setShowLogin(true); }}
-        onSelectAdmin={() => { setShowRoleSelect(false); window.location.href = '/admin/login'; }}
-      />
-    )}
-    {showLogin?<LoginPopup setShowLogin={setShowLogin} onLoginSuccess={() => setIsUserLoggedIn(true)}/>:<></>}
+      {showRoleSelect && (
+        <RoleSelect
+          onClose={() => setShowRoleSelect(false)}
+          onSelectUser={() => { setShowRoleSelect(false); setShowLogin(true); }}
+          onSelectAdmin={() => { setShowRoleSelect(false); window.location.href = '/admin/login'; }}
+        />
+      )}
+      {showLogin ? <LoginPopup setShowLogin={setShowLogin} /> : null}
       <ScrollToTop />
       <div className='app'>
         <OrderStatusProvider>
-        <AdminAuthProvider>
-        <Navbar setShowLogin={setShowLogin} openRoleSelect={() => setShowRoleSelect(true)} isUserLoggedIn={isUserLoggedIn} onUserLogout={() => setIsUserLoggedIn(false)}/>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/menu' element={<Menu />} />
-          <Route path='/cart' element={<Cart />} />
-          <Route path='/order' element={<PlaceOrder />} />
-          <Route path='/profile' element={<Profile onLogout={() => setIsUserLoggedIn(false)} />} />
-          <Route path='/profile/edit' element={<EditProfile />} />
-          <Route path='/about' element={<About />} />
-          <Route path='/privacy-policy' element={<PrivacyPolicy />} />
-          <Route path='/help-support' element={<HelpSupport />} />
-          <Route path='/emergency-report' element={<EmergencyReport />} />
-          <Route path='/delivery' element={<Delivery />} />
-          <Route path='/admin/login' element={<AdminLogin />} />
-          <Route path='/admin' element={<AdminGuard><AdminLayout /></AdminGuard>}>
-            <Route index element={<Dashboard />} />
-            <Route path='orders' element={<Orders />} />
-            <Route path='catalog' element={<Catalog />} />
-            <Route path='users' element={<Users />} />
-            <Route path='support' element={<Support />} />
-            <Route path='emergency' element={<Emergency />} />
-            <Route path='promotions' element={<Promotions />} />
-            <Route path='content' element={<Content />} />
-            <Route path='reports' element={<Reports />} />
-            <Route path='settings' element={<Settings />} />
-            <Route path='profile' element={<AdminProfile />} />
-          </Route>
-        </Routes>
-        </AdminAuthProvider>
+          <AdminAuthProvider>
+            <Navbar
+              setShowLogin={setShowLogin}
+              openRoleSelect={() => setShowRoleSelect(true)}
+            />
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/menu' element={<Menu />} />
+              <Route path='/cart' element={<Cart />} />
+              <Route path='/order' element={<PlaceOrder />} />
+              <Route path='/profile' element={<UserGuard><Profile /></UserGuard>} />
+              <Route path='/profile/edit' element={<UserGuard><EditProfile /></UserGuard>} />
+              <Route path='/about' element={<About />} />
+              <Route path='/privacy-policy' element={<PrivacyPolicy />} />
+              <Route path='/help-support' element={<HelpSupport />} />
+              <Route path='/emergency-report' element={<EmergencyReport />} />
+              <Route path='/delivery' element={<Delivery />} />
+              <Route path='/admin/login' element={<AdminLogin />} />
+              <Route path='/admin' element={<AdminGuard><AdminLayout /></AdminGuard>}>
+                <Route index element={<Dashboard />} />
+                <Route path='orders' element={<Orders />} />
+                <Route path='catalog' element={<Catalog />} />
+                <Route path='users' element={<Users />} />
+                <Route path='support' element={<Support />} />
+                <Route path='emergency' element={<Emergency />} />
+                <Route path='promotions' element={<Promotions />} />
+                <Route path='content' element={<Content />} />
+                <Route path='reports' element={<Reports />} />
+                <Route path='settings' element={<Settings />} />
+                <Route path='profile' element={<AdminProfile />} />
+              </Route>
+            </Routes>
+          </AdminAuthProvider>
         </OrderStatusProvider>
       </div>
       <Footer />

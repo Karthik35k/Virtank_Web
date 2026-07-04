@@ -87,6 +87,8 @@ export const registerUser =
 
         email: user.email,
 
+        role: user.role,
+
         token:
           generateToken(user._id),
 
@@ -162,6 +164,8 @@ export const loginUser =
 
         email: user.email,
 
+        role: user.role,
+
         token:
           generateToken(user._id),
 
@@ -178,3 +182,66 @@ export const loginUser =
 
     }
   };
+
+export const getMe = async (req, res) => {
+  res.status(200).json({
+    _id: req.user._id,
+    username: req.user.username,
+    email: req.user.email,
+    role: req.user.role,
+  });
+};
+
+export const updateUsername = async (req, res) => {
+  try {
+    const { username } = req.body;
+
+    if (!username?.trim()) {
+      return res.status(400).json({ message: "Username cannot be empty" });
+    }
+
+    req.user.username = username.trim();
+    await req.user.save();
+
+    res.status(200).json({
+      _id: req.user._id,
+      username: req.user.username,
+      email: req.user.email,
+      role: req.user.role,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+export const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ message: "All password fields are required" });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ message: "Password must be at least 6 characters" });
+    }
+
+    const user = await User.findById(req.user._id);
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({ message: "Current password is incorrect" });
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(newPassword, salt);
+    await user.save();
+
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};

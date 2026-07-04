@@ -2,13 +2,14 @@ import React from 'react'
 import './Profile.css'
 import { assets } from '../../assets/assets'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 
-const Profile = ({ onLogout }) => {
-  const userEmail = 'user@virtank.com'
+const Profile = () => {
+  const { user, logout } = useAuth()
   const navigate = useNavigate()
 
   const handleLogout = () => {
-    onLogout?.()
+    logout()
     navigate('/')
   }
 
@@ -16,8 +17,8 @@ const Profile = ({ onLogout }) => {
     <div className='profile-page'>
       <div className='profile-card'>
         <img src={assets.profile_icon} alt='User Avatar' className='profile-avatar' />
-        <h2 className='profile-name'>User</h2>
-        <p className='profile-email'>{userEmail}</p>
+        <h2 className='profile-name'>{user?.username || 'User'}</h2>
+        <p className='profile-email'>{user?.email}</p>
 
         <div className='profile-actions'>
           <button className='profile-action' onClick={() => navigate('/profile/edit')}>Edit Profile</button>
@@ -30,5 +31,3 @@ const Profile = ({ onLogout }) => {
 }
 
 export default Profile
-
-

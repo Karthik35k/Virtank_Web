@@ -27,7 +27,7 @@ app.use("/api/auth", authRoutes);
 // Default Route
 
 app.get("/", (req, res) => {
-  res.send("Social Media API Running");
+  res.send("API Running");
 });
 
 export default app;
